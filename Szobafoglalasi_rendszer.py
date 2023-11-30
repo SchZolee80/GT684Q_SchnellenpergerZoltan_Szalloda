@@ -84,11 +84,11 @@ class Szalloda:
         return szoba.ar
 
     def lemondas(self, szoba, datum):
-        if szoba in self.foglalasok and datum in self.foglalasok[szoba]:
+        if szoba in self._foglalasok and datum in self._foglalasok[szoba]:
             del self._foglalasok[szoba][datum]
             print(f"Foglalás lemondva a(z) {datum} dátumon.")
         else:
-            print(f"A megadott foglalás nem található.")
+            print(f"A megadott foglalás nem található. Lemondás sikertelen.")
 
     def listaz_foglalasok(self):
         print("A Hotel foglalásai:")
@@ -170,6 +170,7 @@ def find_szoba(szalloda, szobaszam):
             return szoba
     return None
 
+def kezdeti_betoltes
 
 # Tesztelés
 egyagyas_szoba1 = EgyagyasSzoba("111")
