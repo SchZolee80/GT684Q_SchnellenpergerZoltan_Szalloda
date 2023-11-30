@@ -45,6 +45,13 @@ class Szalloda:
             print(f"A szoba már foglalt ezen a dátumon.")
             return None
 
+    def lemondas(self, szoba, datum):
+        if szoba in self.foglalasok and datum in self.foglalasok[szoba]:
+            del self.foglalasok[szoba][datum]
+            print(f"Foglalás lemondva a(z) {datum} dátumon.")
+        else:
+            print(f"A megadott foglalás nem található.")
+
 
 # Foglalás osztály létrehozása
 class Foglalas:
@@ -75,3 +82,6 @@ foglalas_osszeg = szalloda.foglalas(egyagyas_szoba1, datum)
 
 if foglalas_osszeg is not None:
     print(f"Foglalás sikeres. Fizetendő összeg: {foglalas_osszeg}")
+
+# Lemondás teszt
+szalloda.lemondas(egyagyas_szoba1, datum2)
