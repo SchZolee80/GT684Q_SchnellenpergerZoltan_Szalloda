@@ -1,5 +1,8 @@
 from datetime import datetime
+
 # Szoba osztály létrehozása
+
+
 class Szoba:
     def __init__(self, szobaszam, ar):
         self._szobaszam = szobaszam
@@ -20,27 +23,30 @@ class Szoba:
     def ar(self):
         return self._ar
 
-    @property
-    def get_szoba_tipus(self):
-        pass
-
-    def is_room_available(self, datum):
-        return self.is_valid_date(datum)
-
+    @ar.setter
+    def ar(self, value):
+        if value >= 0:
+            self._ar = value
+        else:
+            print("Az ár nem lehet negatív.")
 
 # EgyagyasSzoba osztály létrehozása
+
+
 class EgyagyasSzoba(Szoba):
     def __init__(self, szobaszam):
         super().__init__(szobaszam, 20000)  # Példának megfelelő ár beállítása
 
-
 # KetagyasSzoba osztály létrehozása
+
+
 class KetagyasSzoba(Szoba):
     def __init__(self, szobaszam):
         super().__init__(szobaszam, 30000)  # Példának megfelelő ár beállítása
 
-
 # Szalloda osztály létrehozása
+
+
 class Szalloda:
     def __init__(self, nev):
         self._nev = nev
@@ -109,7 +115,6 @@ class Szalloda:
         self.foglalas(ketagyas_szoba4, datum)
         self.foglalas(egyagyas_szoba1, datum)  # Rá lehet foglalni
 
-
     def lemondas(self, szoba, datum):
         if szoba in self._foglalasok and datum in self._foglalasok[szoba]:
             del self._foglalasok[szoba][datum]
@@ -126,10 +131,11 @@ class Szalloda:
     def listaz_elerheto_szobak(self):
         print(f"A {self.nev} szálloda elérhető szobái:")
         for szoba in self.szobak:
-            print(f"Szobaszám: {szoba.szobaszam}, Ár: {szoba.ar}, Típus: {szoba.get_szoba_tipus()}")
-
+            print(f"Szobaszám: {szoba.szobaszam}, Ár: {szoba.ar}")
 
 # Foglalás osztály létrehozása
+
+
 class Foglalas:
     def __init__(self, szoba, datum):
         self._szoba = szoba
@@ -142,6 +148,7 @@ class Foglalas:
     @property
     def datum(self):
         return self._datum
+
 
 def felhasznaloi_interface(szalloda):
     while True:
@@ -195,6 +202,7 @@ def find_szoba(szalloda, szobaszam):
         if szoba.szobaszam == szobaszam:
             return szoba
     return None
+
 
 szalloda = Szalloda("Varjó Hotel")
 szalloda.kezdeti_betoltes()
