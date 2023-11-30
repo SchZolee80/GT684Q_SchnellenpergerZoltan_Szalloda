@@ -52,6 +52,12 @@ class Szalloda:
         else:
             print(f"A megadott foglalás nem található.")
 
+    def listaz_foglalasok(self):
+        print("A Hotel foglalásai:")
+        for szoba, foglalasok in self.foglalasok.items():
+            for datum in foglalasok.keys():
+                print(f"Szobaszám: {szoba.szobaszam}, Dátum: {datum}")
+
 
 # Foglalás osztály létrehozása
 class Foglalas:
@@ -63,6 +69,10 @@ class Foglalas:
 # Tesztelés
 egyagyas_szoba1 = EgyagyasSzoba("111")
 ketagyas_szoba1 = KetagyasSzoba("222")
+ketagyas_szoba2 = KetagyasSzoba("223")
+ketagyas_szoba3 = KetagyasSzoba("224")
+ketagyas_szoba4 = KetagyasSzoba("225")
+
 # Szobaszém kiír
 print(egyagyas_szoba1.szobaszam)
 
@@ -77,11 +87,17 @@ szalloda.listaz_szobak()
 datum = "2023-12-01"
 datum2 = "2023-12-02"
 szalloda.foglalas(egyagyas_szoba1, datum2)
-# szalloda.foglalas(egyagyas_szoba1, datum)
+szalloda.foglalas(ketagyas_szoba1, datum2)
+szalloda.foglalas(ketagyas_szoba2, datum2)
+szalloda.foglalas(egyagyas_szoba1, datum)  # Rá lehet foglalni
 foglalas_osszeg = szalloda.foglalas(egyagyas_szoba1, datum)
+
 
 if foglalas_osszeg is not None:
     print(f"Foglalás sikeres. Fizetendő összeg: {foglalas_osszeg}")
 
 # Lemondás teszt
 szalloda.lemondas(egyagyas_szoba1, datum2)
+
+# Foglalás Listázás
+szalloda.listaz_foglalasok()
