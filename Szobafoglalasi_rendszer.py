@@ -53,7 +53,7 @@ class Szalloda:
 
     def listaz_szobak(self):
         for szoba in self._szobak:
-            print(f"Szobaszám: {szoba.szobaszam}, Ár: {szoba.ar}, Típus: {szoba.get_szoba_tipus()}")
+            print(f"Szobaszám: {szoba.szobaszam}, Ár: {szoba.ar}")
 
     def foglalas(self, szoba, datum):
         if szoba not in self.foglalasok:
@@ -79,6 +79,11 @@ class Szalloda:
             for datum in foglalasok.keys():
                 print(f"Szobaszám: {szoba.szobaszam}, Dátum: {datum}")
 
+    def listaz_elerheto_szobak(self):
+        print(f"A {self.nev} szálloda elérhető szobái:")
+        for szoba in self.szobak:
+            print(f"Szobaszám: {szoba.szobaszam}, Ár: {szoba.ar}, Típus: {szoba.get_szoba_tipus()}")
+
 
 # Foglalás osztály létrehozása
 class Foglalas:
@@ -95,6 +100,53 @@ class Foglalas:
         return self._datum
 
 
+def felhasznaloi_interface():
+    while True:
+        print("\nVálasszon műveletet:")
+        print("0. Szobák listázása")
+        print("1. Foglalás")
+        print("2. Lemondás")
+        print("3. Foglalások listázása")
+        print("4. Kilépés")
+
+        choice = input("Adja meg a választott művelet számát: ")
+
+        if choice == "0":
+            print(f"Szobák listája: ")
+            szalloda.listaz_szobak()
+        elif choice == "1":
+            szobaszam = input("Adja meg a szobaszámot: ")
+            datum = input("Adja meg a foglalás dátumát (ÉÉÉÉ-HH-NN): ")
+            szoba = find_szoba(szalloda, szobaszam)
+            if szoba:
+                ertek = szalloda.foglalas(szoba, datum)
+                if ertek is not None:
+                    print(f"Foglalás sikeres. Fizetendő összeg: {ertek}")
+            else:
+                print(f"A megadott szobaszám nem található.")
+        elif choice == "2":
+            szobaszam = input("Adja meg a szobaszámot: ")
+            datum = input("Adja meg a lemondás dátumát (ÉÉÉÉ-HH-NN): ")
+            szoba = find_szoba(szalloda, szobaszam)
+            if szoba:
+                szalloda.lemondas(szoba, datum)
+            else:
+                print(f"A megadott szobaszám nem található.")
+        elif choice == "3":
+            szalloda.listaz_foglalasok()
+        elif choice == "4":
+            print("Kilépés...")
+            break
+        else:
+            print("Érvénytelen választás. Kérem, válasszon újra.")
+
+
+def find_szoba(szalloda, szobaszam):
+    for szoba in szalloda.szobak:
+        if szoba.szobaszam == szobaszam:
+            return szoba
+    return None
+
 
 # Tesztelés
 egyagyas_szoba1 = EgyagyasSzoba("111")
@@ -110,8 +162,10 @@ print(egyagyas_szoba1.szobaszam)
 szalloda = Szalloda("Varjó Hotel")
 szalloda.add_szoba(egyagyas_szoba1)
 szalloda.add_szoba(ketagyas_szoba1)
+szalloda.add_szoba(ketagyas_szoba2)
+szalloda.add_szoba(ketagyas_szoba3)
+szalloda.add_szoba(ketagyas_szoba4)
 print(szalloda.nev)
-# szalloda.listaz_szobak()
 
 # Foglalas teszt
 datum = "2023-12-01"
@@ -122,7 +176,6 @@ szalloda.foglalas(ketagyas_szoba2, datum2)
 szalloda.foglalas(egyagyas_szoba1, datum)  # Rá lehet foglalni
 foglalas_osszeg = szalloda.foglalas(egyagyas_szoba1, datum)
 
-
 if foglalas_osszeg is not None:
     print(f"Foglalás sikeres. Fizetendő összeg: {foglalas_osszeg}")
 
@@ -131,3 +184,6 @@ szalloda.lemondas(egyagyas_szoba1, datum2)
 
 # Foglalás Listázás
 szalloda.listaz_foglalasok()
+
+# Felhasználói interface teszt
+felhasznaloi_interface()
