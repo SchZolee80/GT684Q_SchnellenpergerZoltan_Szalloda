@@ -111,10 +111,16 @@ def felhasznaloi_interface():
 
         choice = input("Adja meg a választott művelet számát: ")
 
-        if choice == "0":
+        try:
+            choice = int(choice)
+        except ValueError:
+            print("Hibás bemenet. Kérem, adjon meg egy számot.")
+            continue
+
+        if choice == 0:
             print(f"Szobák listája: ")
             szalloda.listaz_szobak()
-        elif choice == "1":
+        elif choice == 1:
             szobaszam = input("Adja meg a szobaszámot: ")
             datum = input("Adja meg a foglalás dátumát (ÉÉÉÉ-HH-NN): ")
             szoba = find_szoba(szalloda, szobaszam)
@@ -124,7 +130,7 @@ def felhasznaloi_interface():
                     print(f"Foglalás sikeres. Fizetendő összeg: {ertek}")
             else:
                 print(f"A megadott szobaszám nem található.")
-        elif choice == "2":
+        elif choice == 2:
             szobaszam = input("Adja meg a szobaszámot: ")
             datum = input("Adja meg a lemondás dátumát (ÉÉÉÉ-HH-NN): ")
             szoba = find_szoba(szalloda, szobaszam)
@@ -132,9 +138,9 @@ def felhasznaloi_interface():
                 szalloda.lemondas(szoba, datum)
             else:
                 print(f"A megadott szobaszám nem található.")
-        elif choice == "3":
+        elif choice == 3:
             szalloda.listaz_foglalasok()
-        elif choice == "4":
+        elif choice == 4:
             print("Kilépés...")
             break
         else:
