@@ -1,8 +1,16 @@
+from datetime import datetime
 # Szoba osztály létrehozása
 class Szoba:
     def __init__(self, szobaszam, ar):
         self._szobaszam = szobaszam
         self._ar = ar
+
+    def is_valid_date(self, datum):
+        try:
+            date_obj = datetime.strptime(datum, "%Y-%m-%d")
+            return date_obj >= datetime.now()
+        except ValueError:
+            return False
 
     @property
     def szobaszam(self):
@@ -55,16 +63,25 @@ class Szalloda:
         for szoba in self._szobak:
             print(f"Szobaszám: {szoba.szobaszam}, Ár: {szoba.ar}")
 
-    def foglalas(self, szoba, datum):
-        if szoba not in self.foglalasok:
-            self._foglalasok[szoba] = {}
+    def is_room_available(self, szoba, datum):
+        if szoba in self._foglalasok and datum in self._foglalasok[szoba]:
+            return False
+        return True
 
-        if datum not in self.foglalasok[szoba]:
-            self._foglalasok[szoba][datum] = True
-            return szoba.ar
-        else:
+    def foglalas(self, szoba, datum):
+        if not szoba.is_valid_date(datum):
+            print("Érvénytelen dátum. Kérem, adjon meg egy jövőbeli dátumot.")
+            return None
+
+        if not self.is_room_available(szoba, datum):
             print(f"A szoba már foglalt ezen a dátumon.")
             return None
+
+        if szoba not in self._foglalasok:
+            self._foglalasok[szoba] = {}
+
+        self._foglalasok[szoba][datum] = True
+        return szoba.ar
 
     def lemondas(self, szoba, datum):
         if szoba in self.foglalasok and datum in self.foglalasok[szoba]:
