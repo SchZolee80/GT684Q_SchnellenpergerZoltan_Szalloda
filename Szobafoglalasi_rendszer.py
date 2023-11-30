@@ -1,9 +1,18 @@
 # Szoba osztály létrehozása
 class Szoba:
     def __init__(self, szobaszam, ar):
-        self.szobaszam = szobaszam
-        self.ar = ar
+        self._szobaszam = szobaszam
+        self._ar = ar
 
+    @property
+    def szobaszam(self):
+        return self._szobaszam
+
+    @property
+    def ar(self):
+        return self._ar
+
+    @property
     def get_szoba_tipus(self):
         pass
 
@@ -23,23 +32,35 @@ class KetagyasSzoba(Szoba):
 # Szalloda osztály létrehozása
 class Szalloda:
     def __init__(self, nev):
-        self.nev = nev
-        self.szobak = []
-        self.foglalasok = {}
+        self._nev = nev
+        self._szobak = []
+        self._foglalasok = {}
+
+    @property
+    def nev(self):
+        return self._nev
+
+    @property
+    def szobak(self):
+        return self._szobak
+
+    @property
+    def foglalasok(self):
+        return self._foglalasok
 
     def add_szoba(self, szoba):
-        self.szobak.append(szoba)
+        self._szobak.append(szoba)
 
     def listaz_szobak(self):
-        for szoba in self.szobak:
+        for szoba in self._szobak:
             print(f"Szobaszám: {szoba.szobaszam}, Ár: {szoba.ar}, Típus: {szoba.get_szoba_tipus()}")
 
     def foglalas(self, szoba, datum):
         if szoba not in self.foglalasok:
-            self.foglalasok[szoba] = {}
+            self._foglalasok[szoba] = {}
 
         if datum not in self.foglalasok[szoba]:
-            self.foglalasok[szoba][datum] = True
+            self._foglalasok[szoba][datum] = True
             return szoba.ar
         else:
             print(f"A szoba már foglalt ezen a dátumon.")
@@ -47,14 +68,14 @@ class Szalloda:
 
     def lemondas(self, szoba, datum):
         if szoba in self.foglalasok and datum in self.foglalasok[szoba]:
-            del self.foglalasok[szoba][datum]
+            del self._foglalasok[szoba][datum]
             print(f"Foglalás lemondva a(z) {datum} dátumon.")
         else:
             print(f"A megadott foglalás nem található.")
 
     def listaz_foglalasok(self):
         print("A Hotel foglalásai:")
-        for szoba, foglalasok in self.foglalasok.items():
+        for szoba, foglalasok in self._foglalasok.items():
             for datum in foglalasok.keys():
                 print(f"Szobaszám: {szoba.szobaszam}, Dátum: {datum}")
 
@@ -62,8 +83,17 @@ class Szalloda:
 # Foglalás osztály létrehozása
 class Foglalas:
     def __init__(self, szoba, datum):
-        self.szoba = szoba
-        self.datum = datum
+        self._szoba = szoba
+        self._datum = datum
+
+    @property
+    def szoba(self):
+        return self._szoba
+
+    @property
+    def datum(self):
+        return self._datum
+
 
 
 # Tesztelés
@@ -81,7 +111,7 @@ szalloda = Szalloda("Varjó Hotel")
 szalloda.add_szoba(egyagyas_szoba1)
 szalloda.add_szoba(ketagyas_szoba1)
 print(szalloda.nev)
-szalloda.listaz_szobak()
+# szalloda.listaz_szobak()
 
 # Foglalas teszt
 datum = "2023-12-01"
