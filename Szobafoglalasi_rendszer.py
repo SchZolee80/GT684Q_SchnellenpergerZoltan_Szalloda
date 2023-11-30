@@ -24,6 +24,9 @@ class Szoba:
     def get_szoba_tipus(self):
         pass
 
+    def is_room_available(self, datum):
+        return self.is_valid_date(datum)
+
 
 # EgyagyasSzoba osztály létrehozása
 class EgyagyasSzoba(Szoba):
@@ -83,6 +86,30 @@ class Szalloda:
         self._foglalasok[szoba][datum] = True
         return szoba.ar
 
+    def kezdeti_betoltes(self):
+        egyagyas_szoba1 = EgyagyasSzoba("111")
+        ketagyas_szoba1 = KetagyasSzoba("222")
+        ketagyas_szoba2 = KetagyasSzoba("223")
+        ketagyas_szoba3 = KetagyasSzoba("224")
+        ketagyas_szoba4 = KetagyasSzoba("225")
+
+        self.add_szoba(egyagyas_szoba1)
+        self.add_szoba(ketagyas_szoba1)
+        self.add_szoba(ketagyas_szoba2)
+        self.add_szoba(ketagyas_szoba3)
+        self.add_szoba(ketagyas_szoba4)
+
+        datum = "2023-12-31"
+        datum1 = "2023-12-01"
+        datum2 = "2023-12-02"
+        self.foglalas(egyagyas_szoba1, datum2)
+        self.foglalas(ketagyas_szoba1, datum2)
+        self.foglalas(ketagyas_szoba2, datum2)
+        self.foglalas(ketagyas_szoba3, datum1)
+        self.foglalas(ketagyas_szoba4, datum)
+        self.foglalas(egyagyas_szoba1, datum)  # Rá lehet foglalni
+
+
     def lemondas(self, szoba, datum):
         if szoba in self._foglalasok and datum in self._foglalasok[szoba]:
             del self._foglalasok[szoba][datum]
@@ -116,8 +143,7 @@ class Foglalas:
     def datum(self):
         return self._datum
 
-
-def felhasznaloi_interface():
+def felhasznaloi_interface(szalloda):
     while True:
         print("\nVálasszon műveletet:")
         print("0. Szobák listázása")
@@ -170,44 +196,6 @@ def find_szoba(szalloda, szobaszam):
             return szoba
     return None
 
-def kezdeti_betoltes
-
-# Tesztelés
-egyagyas_szoba1 = EgyagyasSzoba("111")
-ketagyas_szoba1 = KetagyasSzoba("222")
-ketagyas_szoba2 = KetagyasSzoba("223")
-ketagyas_szoba3 = KetagyasSzoba("224")
-ketagyas_szoba4 = KetagyasSzoba("225")
-
-# Szobaszém kiír
-print(egyagyas_szoba1.szobaszam)
-
-# Szálloda létrehoz és hozzáadjuk a szobákat
 szalloda = Szalloda("Varjó Hotel")
-szalloda.add_szoba(egyagyas_szoba1)
-szalloda.add_szoba(ketagyas_szoba1)
-szalloda.add_szoba(ketagyas_szoba2)
-szalloda.add_szoba(ketagyas_szoba3)
-szalloda.add_szoba(ketagyas_szoba4)
-print(szalloda.nev)
-
-# Foglalas teszt
-datum = "2023-12-01"
-datum2 = "2023-12-02"
-szalloda.foglalas(egyagyas_szoba1, datum2)
-szalloda.foglalas(ketagyas_szoba1, datum2)
-szalloda.foglalas(ketagyas_szoba2, datum2)
-szalloda.foglalas(egyagyas_szoba1, datum)  # Rá lehet foglalni
-foglalas_osszeg = szalloda.foglalas(egyagyas_szoba1, datum)
-
-if foglalas_osszeg is not None:
-    print(f"Foglalás sikeres. Fizetendő összeg: {foglalas_osszeg}")
-
-# Lemondás teszt
-szalloda.lemondas(egyagyas_szoba1, datum2)
-
-# Foglalás Listázás
-szalloda.listaz_foglalasok()
-
-# Felhasználói interface teszt
-felhasznaloi_interface()
+szalloda.kezdeti_betoltes()
+felhasznaloi_interface(szalloda)
